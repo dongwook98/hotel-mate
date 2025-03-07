@@ -64,4 +64,5 @@ export const colors = {
   teal900: 'var(--teal900)',
 };
 
+// colors 객체의 키값을 타입으로 지정
 export type Colors = keyof typeof colors;
