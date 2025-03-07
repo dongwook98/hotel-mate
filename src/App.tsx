@@ -1,22 +1,15 @@
-import styled from '@emotion/styled';
-import { css } from '@emotion/react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import Button from '@shared/Button';
+import TestPage from '@/pages/TestPage';
+import HotelListPage from '@/pages/HotelListPage';
 
 export default function App() {
   return (
-    <Container css={containerStyle}>
-      <Button>버튼</Button>
-    </Container>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<HotelListPage />} />
+        <Route path='/test' element={<TestPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
-
-const containerStyle = css`
-  color: red;
-`;
-
-const Container = styled.div`
-  width: 100px;
-  height: 100px;
-  background-color: blue;
-`;
