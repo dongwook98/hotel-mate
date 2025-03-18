@@ -1,6 +1,7 @@
 import Carousel from '@/components/hotel/Carousel';
 import Contents from '@/components/hotel/Contents';
 import useHotel from '@/components/hotel/hooks/useHotel';
+import Map from '@/components/hotel/Map';
 import Rooms from '@/components/hotel/Rooms';
 import Top from '@/components/shared/Top';
 import { useParams } from 'react-router-dom';
@@ -16,7 +17,7 @@ export default function HotelPage() {
     return <div>Loading...</div>;
   }
 
-  const { name, comment, images, contents } = data;
+  const { name, comment, images, contents, location } = data;
 
   return (
     <div>
@@ -24,6 +25,7 @@ export default function HotelPage() {
       <Carousel images={images} />
       <Rooms hotelId={id} />
       <Contents contents={contents} />
+      <Map location={location} />
     </div>
   );
 }

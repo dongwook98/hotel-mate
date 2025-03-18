@@ -12,7 +12,7 @@ import Button from '../shared/Button';
 import addDelimiter from '@/utils/addDelimiter';
 
 export default function Rooms({ hotelId }: { hotelId: string }) {
-  const { isLoading, data } = useRooms({ hotelId });
+  const { data } = useRooms({ hotelId });
 
   return (
     <Container>
@@ -31,6 +31,7 @@ export default function Rooms({ hotelId }: { hotelId: string }) {
 
           return (
             <ListRow
+              key={room.id}
               left={
                 <img
                   css={imageStyles}
