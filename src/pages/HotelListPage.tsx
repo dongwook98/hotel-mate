@@ -25,6 +25,7 @@ export default function HotelListPage() {
           {hotels?.map((hotel, index) => (
             <Fragment key={hotel.id}>
               <Hotel hotel={hotel} />
+              {/* 마지막 목록은 스페이싱 렌더링 X */}
               {hotels.length - 1 === index ? null : (
                 <Spacing
                   size={8}
