@@ -2,7 +2,7 @@ import { Fragment } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 import { useHotels } from '@/components/hotelList/hooks/useHotels';
-import Hotel from '@/components/hotelList/Hotel';
+import HotelItem from '@/components/hotelList/HotelItem';
 import Spacing from '@shared/Spacing';
 import Top from '@shared/Top';
 
@@ -24,7 +24,7 @@ export default function HotelListPage() {
         <ul>
           {hotels?.map((hotel, index) => (
             <Fragment key={hotel.id}>
-              <Hotel hotel={hotel} />
+              <HotelItem hotel={hotel} />
               {/* 마지막 목록은 스페이싱 렌더링 X */}
               {hotels.length - 1 === index ? null : (
                 <Spacing

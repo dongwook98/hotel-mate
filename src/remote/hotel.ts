@@ -6,6 +6,8 @@ import {
   getDocs,
   startAfter,
   DocumentData,
+  getDoc,
+  doc,
 } from 'firebase/firestore';
 
 import { COLLECTIONS } from '@/constants';
@@ -38,13 +40,20 @@ export async function getHotels(
         ...doc.data(),
       } as Hotel)
   );
-  console.log('🚀 ~ items:', items);
 
   const lastVisible = hotelsSnapshot.docs[hotelsSnapshot.docs.length - 1];
-  console.log('🚀 ~ lastVisible:', lastVisible);
 
   return {
     items,
     lastVisible,
   };
+}
+
+export async function getHotel(id: string) {
+  const snapshot = await getDoc(doc(store, COLLECTIONS.HOTEL, id));
+
+  return {
+    id,
+    ...snapshot.data(),
+  } as Hotel;
 }

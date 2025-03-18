@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-import { Hotel as IHotel } from '@models/hotel';
+import { Hotel } from '@models/hotel';
 import ListRow from '@shared/ListRow';
 import Flex from '@shared/Flex';
 import Spacing from '@shared/Spacing';
@@ -12,9 +12,8 @@ import { differenceInMilliseconds, parseISO } from 'date-fns';
 import formatTime from '@/utils/formatTime';
 import { Link } from 'react-router-dom';
 
-export default function Hotel({ hotel }: { hotel: IHotel }) {
+export default function HotelItem({ hotel }: { hotel: Hotel }) {
   const [remainedTime, setRemainedTime] = useState(0);
-  console.log('🚀 ~ Hotel ~ remainedTime:', remainedTime);
 
   useEffect(() => {
     if (hotel.events == null || hotel.events.promoEndTime == null) {
