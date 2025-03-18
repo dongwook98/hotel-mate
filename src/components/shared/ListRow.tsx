@@ -54,7 +54,7 @@ function ListRowTexts({
   title,
   subTitle,
 }: {
-  title: string;
+  title: React.ReactNode;
   subTitle: string;
 }) {
   return (
