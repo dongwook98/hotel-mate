@@ -7,19 +7,35 @@ import Spacing from '../shared/Spacing';
 import Text from '../shared/Text';
 import { Hotel } from '@/models/hotel';
 import { useAlertContext } from '@/context/AlertContext';
+import useLike from '@/hooks/like/useLike';
 
 export default function ActionButtons({ hotel }: { hotel: Hotel }) {
   const share = useShare();
   const { open } = useAlertContext();
+  const { data: likes, mutate: likeMutate } = useLike();
 
   const { name, comment, mainImageUrl } = hotel;
+
+  const isLike = Boolean(likes?.find((like) => like.hotelId === hotel.id));
 
   return (
     <Flex css={containerStyles}>
       <Button
         label='찜하기'
-        iconUrl='https://cdn4.iconfinder.com/data/icons/twitter-29/512/166_Heart_Love_Like_Twitter-64.png'
-        onClick={() => {}}
+        iconUrl={
+          isLike
+            ? 'https://cdn4.iconfinder.com/data/icons/twitter-29/512/166_Heart_Love_Like_Twitter-64.png'
+            : 'https://cdn4.iconfinder.com/data/icons/basic-ui-2-line/32/heart-love-like-likes-loved-favorite-512.png'
+        }
+        onClick={() => {
+          likeMutate({
+            hotel: {
+              id: hotel.id,
+              mainImageUrl: hotel.mainImageUrl,
+              name: hotel.name,
+            },
+          });
+        }}
       />
       <Button
         label='공유하기'

@@ -5,10 +5,12 @@ import { useHotels } from '@/components/hotelList/hooks/useHotels';
 import HotelItem from '@/components/hotelList/HotelItem';
 import Spacing from '@shared/Spacing';
 import Top from '@shared/Top';
+import useLike from '@/hooks/like/useLike';
 
 export default function HotelListPage() {
   // 커스텀훅을 활용해 컴포넌트에 렌더링에 집중하는 환경 조성
   const { data: hotels, hasNextPage, loadMore } = useHotels();
+  const { data: likes, mutate: likeMutate } = useLike();
 
   return (
     <div>
@@ -24,7 +26,13 @@ export default function HotelListPage() {
         <ul>
           {hotels?.map((hotel, index) => (
             <Fragment key={hotel.id}>
-              <HotelItem hotel={hotel} />
+              <HotelItem
+                hotel={hotel}
+                isLike={Boolean(
+                  likes?.find((like) => like.hotelId === hotel.id)
+                )}
+                onLike={likeMutate}
+              />
               {/* 마지막 목록은 스페이싱 렌더링 X */}
               {hotels.length - 1 === index ? null : (
                 <Spacing
