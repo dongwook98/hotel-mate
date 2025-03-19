@@ -107,3 +107,16 @@ export async function toggleLike({
     return setDoc(doc(collection(store, COLLECTIONS.LIKE)), newLike);
   }
 }
+
+export function updateOrder(likes: Like[]) {
+  const batch = writeBatch(store);
+
+  // 업데이트한 찜 목록을 순회하면서 오더 설정
+  likes.forEach((like) => {
+    batch.update(doc(collection(store, COLLECTIONS.LIKE), like.id), {
+      order: like.order,
+    });
+  });
+
+  return batch.commit();
+}

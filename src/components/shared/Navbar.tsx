@@ -6,6 +6,7 @@ import Flex from './Flex';
 import Button from './Button';
 import { colors } from '@/styles/colorPalette';
 import useUser from '@/hooks/auth/useUser';
+import Spacing from './Spacing';
 
 export default function Navbar() {
   const location = useLocation();
@@ -17,18 +18,29 @@ export default function Navbar() {
   const renderButton = useCallback(() => {
     if (user != null) {
       return (
-        <Link to='/my'>
-          <img
-            src={
-              user.photoURL ??
-              'https://cdn0.iconfinder.com/data/icons/phosphor-light-vol-4/256/user-circle-light-64.png'
-            }
-            alt='유저의 이미지'
-            width={40}
-            height={40}
-            style={{ borderRadius: '100%' }}
-          />
-        </Link>
+        <Flex align='center'>
+          <Link to='/my'>
+            <img
+              src={
+                user.photoURL ??
+                'https://cdn0.iconfinder.com/data/icons/phosphor-light-vol-4/256/user-circle-light-64.png'
+              }
+              alt='유저의 이미지'
+              width={40}
+              height={40}
+              style={{ borderRadius: '100%' }}
+            />
+          </Link>
+          <Spacing size={20} direction='horizontal' />
+          <Link to='/settings'>
+            <img
+              src='https://cdn3.iconfinder.com/data/icons/internet-relative/200/Setting-64.png'
+              alt='세팅 아이콘'
+              width={40}
+              height={40}
+            />
+          </Link>
+        </Flex>
       );
     }
 
