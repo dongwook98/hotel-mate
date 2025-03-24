@@ -4,4 +4,5 @@ export interface Review {
   userId: string;
   hotelId: string;
   createdAt: Date;
+  updatedAt?: Date;
 }

@@ -1,10 +1,13 @@
 import {
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
   orderBy,
   query,
+  setDoc,
+  updateDoc,
 } from 'firebase/firestore';
 import { store } from './firebase';
 import { COLLECTIONS } from '@/constants';
@@ -63,4 +66,31 @@ export async function getReviews({ hotelId }: { hotelId: string }) {
   }
 
   return results;
+}
+
+export function writeReview(review: Omit<Review, 'id'>) {
+  const hotelRef = doc(store, COLLECTIONS.HOTEL, review.hotelId);
+  const reviewRef = doc(collection(hotelRef, COLLECTIONS.REVIEW));
+
+  return setDoc(reviewRef, review);
+}
+
+export function removeReview({
+  reviewId,
+  hotelId,
+}: {
+  reviewId: string;
+  hotelId: string;
+}) {
+  const hotelRef = doc(store, COLLECTIONS.HOTEL, hotelId);
+  const reviewRef = doc(collection(hotelRef, COLLECTIONS.REVIEW), reviewId);
+
+  return deleteDoc(reviewRef);
+}
+
+export function updateReview(review: Partial<Review>) {
+  const hotelRef = doc(store, COLLECTIONS.HOTEL, review.hotelId as string);
+  const reviewRef = doc(collection(hotelRef, COLLECTIONS.REVIEW), review.id);
+
+  return updateDoc(reviewRef, { ...review });
 }
