@@ -1,4 +1,10 @@
-import { format, isSameDay, parseISO, differenceInDays } from 'date-fns';
+import {
+  format,
+  isSameDay,
+  parseISO,
+  differenceInDays,
+  addDays,
+} from 'date-fns';
 import styled from '@emotion/styled';
 
 import { ko } from 'date-fns/locale';
@@ -19,7 +25,6 @@ export default function RangePicker({
   const today = new Date();
 
   const handleDayClick = (dateRange: DateRange | undefined) => {
-    console.log('🚀 ~ handleDayClick ~ dateRange:', dateRange);
     if (dateRange == null) {
       return;
     }
@@ -53,6 +58,9 @@ export default function RangePicker({
         min={1}
         onSelect={handleDayClick}
         selected={selected}
+        disabled={{
+          before: addDays(new Date(), 1),
+        }}
       />
     </Container>
   );
@@ -114,5 +122,9 @@ const Container = styled.div`
   .rdp-range_end {
     color: ${colors.white};
     background-color: ${colors.blue};
+  }
+
+  .rdp-disabled {
+    color: ${colors.gray200};
   }
 `;
