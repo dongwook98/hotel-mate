@@ -1,7 +1,16 @@
-import { collection, doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc,
+  query,
+  where,
+  getDocs,
+} from 'firebase/firestore';
 import { store } from './firebase';
 import { COLLECTIONS } from '@/constants';
-
+import { getHotelWithRoom } from './hotel';
 import { Reservation } from '@/models/reservation';
 import { Room } from '@/models/room';
 
@@ -24,4 +33,36 @@ export async function makeReservation(newReservation: Reservation) {
     }),
     setDoc(doc(collection(store, COLLECTIONS.RESERVATION)), newReservation),
   ]);
+}
+
+export async function getReservations({ userId }: { userId: string }) {
+  const reservationQuery = query(
+    collection(store, COLLECTIONS.RESERVATION),
+    where('userId', '==', userId)
+  );
+
+  const reservationSnapshot = await getDocs(reservationQuery);
+
+  const result = [];
+
+  for (const reservationDoc of reservationSnapshot.docs) {
+    const reservation = {
+      id: reservationDoc.id,
+      ...(reservationDoc.data() as Reservation),
+    };
+
+    // 예약 문서에서 호텔 데이터 가져오기
+    const hotelWithRoom = await getHotelWithRoom({
+      hotelId: reservation.hotelId,
+      roomId: reservation.roomId,
+    });
+
+    result.push({
+      reservation,
+      hotel: hotelWithRoom.hotel,
+      room: hotelWithRoom.room,
+    });
+  }
+
+  return result;
 }

@@ -41,20 +41,20 @@ export default function Form({
             })}
           />
         );
-      }
-
-      if (form.type === 'SELECT') {
+      } else if (form.type === 'SELECT') {
         return (
           <Select
             label={form.label}
-            options={form.options}
             // TODO hasError={formState.errors[form.id] != null}
+            options={form.options}
             {...register(form.id, {
               required: form.required,
               pattern: VALIDATION_MESSAGE_MAP[form.id],
             })}
           />
         );
+      } else {
+        return null;
       }
     },
     [formState.errors, register]
@@ -63,9 +63,7 @@ export default function Form({
   return (
     <div style={{ padding: '24px' }}>
       <Text bold>예약정보</Text>
-
       <Spacing size={16} />
-
       <form>
         {forms.map((form) => {
           return (
@@ -75,11 +73,12 @@ export default function Form({
             </Fragment>
           );
         })}
+        <Spacing size={80} />
+        <FixedBottomButton
+          label={buttonLabel}
+          onClick={handleSubmit(onSubmit)}
+        />
       </form>
-
-      <Spacing size={80} />
-
-      <FixedBottomButton label={buttonLabel} onClick={handleSubmit(onSubmit)} />
     </div>
   );
 }
@@ -95,6 +94,7 @@ const VALIDATION_MESSAGE_MAP: {
     message: '한글명을 확인해주세요',
   },
   email: {
+    // eslint-disable-next-line no-useless-escape
     value: /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
     message: '이메일 형식을 확인해주세요',
   },

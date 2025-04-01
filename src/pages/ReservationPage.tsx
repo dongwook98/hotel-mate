@@ -1,6 +1,5 @@
 import { parse } from 'qs';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import useReservation from '@/components/reservation/hooks/useReservation';
 import Summary from '@/components/reservation/Summary';
@@ -8,10 +7,12 @@ import Spacing from '@/components/shared/Spacing';
 import Form from '@/components/reservation/Form';
 import addDelimiter from '@/utils/addDelimiter';
 import useUser from '@/hooks/auth/useUser';
+import { useAlertContext } from '@/context/AlertContext';
 
 export default function ReservationPage() {
+  const { open } = useAlertContext();
   const user = useUser();
-  const navigate = useNavigate();
+
   const { startDate, endDate, nights, roomId, hotelId } = parse(
     window.location.search,
     { ignoreQueryPrefix: true }
@@ -39,6 +40,18 @@ export default function ReservationPage() {
     roomId,
   });
 
+  // 객실 매진 상황
+  useEffect(() => {
+    if (data?.room.avaliableCount === 0) {
+      open({
+        title: '객신이 매진되었습니다.',
+        onButtonClick: () => {
+          window.history.back();
+        },
+      });
+    }
+  }, [data?.room.avaliableCount, open]);
+
   if (data == null || isLoading === true) {
     return null;
   }
@@ -57,8 +70,6 @@ export default function ReservationPage() {
     };
 
     await makeReservationMutate(newReservation);
-
-    navigate(`/reservation/done?hotelName=${hotel.name}`);
   };
 
   const buttonLabel = `${nights}박 ${addDelimiter(

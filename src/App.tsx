@@ -14,6 +14,8 @@ import Navbar from './components/shared/Navbar';
 import PrivateRoute from './components/auth/PrivateRoute';
 import SchedulePage from './pages/SchedulePage';
 import ReservationPage from './pages/ReservationPage';
+import ReservationDonePage from './pages/ReservationDonePage';
+import ReservationListPage from './pages/ReservationListPage';
 
 export default function App() {
   useLoadKakao();
@@ -63,6 +65,22 @@ export default function App() {
             element={
               <PrivateRoute>
                 <ReservationPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='/reservation/done'
+            element={
+              <PrivateRoute>
+                <ReservationDonePage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='/reservation/list'
+            element={
+              <PrivateRoute>
+                <ReservationListPage />
               </PrivateRoute>
             }
           />

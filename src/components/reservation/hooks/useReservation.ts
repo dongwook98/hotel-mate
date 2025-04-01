@@ -1,9 +1,10 @@
+import { useNavigate } from 'react-router-dom';
+import { useMutation, useQuery } from '@tanstack/react-query';
+
 import { useAlertContext } from '@/context/AlertContext';
 import { Reservation } from '@/models/reservation';
 import { getHotelWithRoom } from '@/remote/hotel';
 import { makeReservation } from '@/remote/reservation';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
 
 function useReservation({
   hotelId,
@@ -12,24 +13,12 @@ function useReservation({
   hotelId: string;
   roomId: string;
 }) {
+  const navigate = useNavigate();
   const { open } = useAlertContext();
-  const { data, isLoading, isSuccess } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['hotelWithRoom', hotelId, roomId],
     queryFn: () => getHotelWithRoom({ hotelId, roomId }),
   });
-
-  useEffect(() => {
-    if (isSuccess) {
-      if (data.room.avaliableCount === 0) {
-        open({
-          title: '객실이 매진되었습니다.',
-          onButtonClick: () => {
-            window.history.back();
-          },
-        });
-      }
-    }
-  }, [data?.room.avaliableCount, isSuccess, open]);
 
   const { mutateAsync: makeReservationMutate } = useMutation({
     mutationFn: (newReservation: Reservation) => {
@@ -42,6 +31,9 @@ function useReservation({
           window.history.back();
         },
       });
+    },
+    onSuccess: () => {
+      navigate(`/reservation/done?hotelId=${hotelId}`);
     },
   });
 

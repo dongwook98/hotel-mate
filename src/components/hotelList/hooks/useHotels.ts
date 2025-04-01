@@ -5,7 +5,7 @@ import { useCallback } from 'react';
 import { DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
 import { Hotel } from '@/models/hotel';
 
-export function useHotels() {
+function useHotels() {
   const { data, hasNextPage, fetchNextPage, isFetching } = useInfiniteQuery({
     queryKey: ['hotels'],
     queryFn: ({
@@ -31,3 +31,5 @@ export function useHotels() {
 
   return { loadMore, data: hotels, isFetching, hasNextPage };
 }
+
+export default useHotels;
